@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحليل الفاتورة</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .navbar {
+            background-color: #222663; /* اللون الجديد */
+            padding: 20px;
+            color: #fff;
+            position: relative; /* لإضافة الشعار */
+        }
+        .navbar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .navbar ul li {
+            display: inline;
+            margin-left: 20px;
+            font-size: 18px;
+        }
+        .navbar ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .navbar .login-btn {
+            background-color: #28a745;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+        }
+        .logo {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            width: 100px; /* حجم الشعار */
+            height: auto;
+        }
+        .output-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 80vh;
+            padding: 20px;
+        }
+        .invoice-image {
+            width: 300px; /* تم تقليص العرض إلى 300px */
+            height: auto;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .output-section {
+            text-align: right;
+            width: 300px;
+            padding: 20px;
+            background-color: #fff; 
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin-right: 20px;
+            border-radius: 8px;
+        }
+        .output-section h2 {
+            color: #222663; /* اللون الجديد */
+            font-size: 18px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .invoice-form {
+            text-align: right;
+            direction: rtl;
+        }
+        .invoice-form p {
+            display: block;
+            font-size: 14px;
+            margin: 8px auto;
+            text-align: right;
+            color: #333;
+        }
+        .submit-btn, .download-btn {
+            background-color: #28a745;
+            color: #fff;
+            padding: 8px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: calc(100% - 20px);
+            margin-top: 10px;
+        }
+        .submit-btn:hover, .download-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <img src="https://i.ibb.co/VTH1BHw/Logo.png" alt="شعار دقة" class="logo">
+        <ul>
+            <li><a href="index.html">الصفحة الرئيسية</a></li>
+            <li><a href="الخدمات.html">الخدمات</a></li>
+            <li><a href="من نحن؟.html">من نحن؟</a></li>
+            <li><a href="تسجيل الدخول.html" class="login-btn">تسجيل دخول</a></li>
+            <li><a href="output.html">الفاتورة</a></li>
+            <li><a href="اشترك معنا.html">اشترك معنا</a></li>
+        </ul>
+    </div>
+
+    <div class="output-container">
+        <div>
+            <img id="invoiceImage" src="https://i.ibb.co/jrgw0LM/image.png" alt="صورة الفاتورة" class="invoice-image">
+        </div>
+        <div class="output-section">
+            <h2>البيانات المستخرجة</h2>
+            <div class="invoice-form">
+                <p>اسم الشركة: شركة X</p>
+                <p>رقم الفاتورة: #1234</p>
+                <p>التاريخ: 2024/02/09</p>
+                <p>البيان: صيانة النظام المحاسبي</p>
+                <p>السعر: 500</p>
+                <p>الضريبة: 75</p>
+                <p>الإجمالي: 575</p>
+                <button class="submit-btn">حفظ</button>
+                <button class="download-btn" onclick="downloadPDF()">تحميل الفاتورة بصيغة .pdf</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to generate and download PDF with image -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: "portrait", // وضع العمود
+                unit: "mm",
+                format: "a4",
+                putOnlyUsedFonts: true,
+                floatPrecision: 16 // عدد النقاط العشرية
+            });
+
+            // إضافة النصوص إلى ملف PDF
+            doc.setFontSize(12);
+            doc.text("الفاتورة", 105, 10, { align: "center" });
+            doc.setFontSize(10);
+            doc.text("اسم الشركة: شركة X", 10, 30);
+            doc.text("رقم الفاتورة: #1234", 10, 40);
+            doc.text("التاريخ: 2024/02/09", 10, 50);
+            doc.text("البيان: صيانة النظام المحاسبي", 10, 60);
+            doc.text("السعر: 500", 10, 70);
+            doc.text("الضريبة: 75", 10, 80);
+            doc.text("الإجمالي: 575", 10, 90);
+
+            // إضافة الصورة الجديدة مباشرة من الرابط
+            const imgUrl = "https://i.ibb.co/rpsXFZd/image.png";
+            const img = new Image();
+            img.src = imgUrl;
+
+            img.onload = function() {
+                const imgWidth = 200; // عرض الصورة
+                const imgHeight = (img.width / img.height) * imgWidth; // ارتفاع الصورة للحفاظ على النسبة
+                const x = 10; // موقع الصورة على المحور السيني
+                const y = 10; // موقع الصورة على المحور الصادي
+                doc.addImage(img, "PNG", x, y, imgWidth, imgHeight);
+                doc.save("فاتورة.pdf");
+            };
+        }
+    </script>
+
+</body>
+</html>
